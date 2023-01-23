@@ -6,7 +6,7 @@
 #    By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 16:01:07 by mwilsch           #+#    #+#              #
-#    Updated: 2023/01/23 16:10:34 by mwilsch          ###   ########.fr        #
+#    Updated: 2023/01/23 16:29:18 by mwilsch          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,15 +15,15 @@ NAME			=	philo
 SRC_DIR		=	src/
 OBJ_DIR		=	obj/
 CC				=	gcc
-CFLAGS		= -pthread 
-HEADERS 	= -I inc
+CFLAGS		= -g
+INC 	= -I inc/
 RM				=	rm -rf
 
 
 ## Debugging ##
-ifdef DEBUG
-	CFLAGS += -g -fsanitize=address
-endif
+# ifdef DEBUG
+# 	CFLAGS += -g -fsanitize=address
+# endif
 
 ## Colors ##
 
@@ -49,11 +49,11 @@ OBJF			=	test
 all:	$(NAME)
 
 $(NAME):	$(OBJ)
-			@$(CC) $(CLFAGS) $(OBJ) $(HEADERS) $(NAME)
+			@$(CC) $(CLFAGS) $(OBJ) $(INC) -o $(NAME)
 			@echo "$(Magenta)Philo complied$(Reset)"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
-			@$(CC) $(CFLAGS) -c $< $(HEADERS) -o $@
+			@$(CC) $(CFLAGS) -c $< $(INC) -o $@
 
 $(OBJF):
 			@mkdir -p $(OBJ_DIR)
