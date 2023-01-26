@@ -6,7 +6,7 @@
 #    By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 16:01:07 by mwilsch           #+#    #+#              #
-#    Updated: 2023/01/23 16:29:18 by mwilsch          ###   ########.fr        #
+#    Updated: 2023/01/25 19:39:00 by mwilsch          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,15 +15,15 @@ NAME			=	philo
 SRC_DIR		=	src/
 OBJ_DIR		=	obj/
 CC				=	gcc
-CFLAGS		= -g
-INC 	= -I inc/
+CFLAGS		= -pthread
+INC				= -I inc/
 RM				=	rm -rf
 
 
 ## Debugging ##
-# ifdef DEBUG
-# 	CFLAGS += -g -fsanitize=address
-# endif
+ifdef DEBUG
+	CFLAGS += -g -fsanitize=address 
+endif
 
 ## Colors ##
 
@@ -39,7 +39,7 @@ White			=	\033[37m
 
 ## Files ##
 
-SRC_FILES	= philo
+SRC_FILES	= philo philo_init
 
 SRC				=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ				=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
@@ -49,7 +49,7 @@ OBJF			=	test
 all:	$(NAME)
 
 $(NAME):	$(OBJ)
-			@$(CC) $(CLFAGS) $(OBJ) $(INC) -o $(NAME)
+			@$(CC) $(CFLAGS) $(OBJ) $(INC) -o $(NAME)
 			@echo "$(Magenta)Philo complied$(Reset)"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
@@ -65,7 +65,7 @@ fclean: clean
 	@$(RM) $(NAME)
 	@echo "$(Red)All libs cleaned$(Reset)"
 
-re: fclean start
+re: fclean all
 	@echo "$(Yellow)Recomplied everything$(Reset)"
 
 .PHONY: all clean fclean re
