@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:47:55 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/01/28 15:12:54 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/01/28 15:26:36 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,14 @@ typedef struct s_philo
 	pthread_t		thread;
 	int					id;
 	int					elapsed;
+	t_data			*data;
 } t_philo;
 
 typedef struct s_data
 {
 	pthread_t	*big_brother;
 	t_config	*conf;
-	t_mutex		**mutexes;
+	t_mutex		*mutexes;
 	t_philo		*philosophers;
 } t_data;
 

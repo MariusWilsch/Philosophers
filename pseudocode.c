@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 11:59:15 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/01/28 14:33:07 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/01/28 16:00:57 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ for (i = 0; i < 6; i++) {
 
 // s_philo thread creation
 
-void	invite_philosophers(t_philo **ph, t_data **data)
+void	invite_philosophers(t_philo *ph, t_data *data)
 {
 	struct timeval	start;
 	t_philo					*temp;
@@ -163,46 +163,58 @@ void	invite_philosophers(t_philo **ph, t_data **data)
 	
 
 	i = 0;
-	temp = (*ph);
-	while (i < (*data)->num_of_ph)
-	{
-		temp[i].number_tag = i;
-		i++;
-	}
+	temp = ph;
 	i = 0;
+	pthread_mutex_lock(&mutex);
 	while (i < (*data)->num_of_ph)
 	{
-		gettimeofday(&temp[i].start, NULL);
-		temp[i].is_locked = false;
-		pthread_mutex_init(&temp[i].lock, NULL);
 		if (pthread_create(&temp[i].thread, NULL, &philo_routine, &temp[i]) < 0)
-			exit(1);
+			return (pthread_mutex_unlock(&mutex))
+		temp[i].id = i;
+		temp[i].data = data;
 		i++;
 	}
 	i = 0;
-	while (i < (*data)->num_of_ph)
-	{
-		pthread_join(temp[i].thread, NULL);
-		i++;
-	}
+	pthread_mutex_unlock(&mutex);
+	// while (i < (*data)->num_of_ph)
+	// {
+	// 	pthread_join(temp[i].thread, NULL);
+	// 	i++;
+	// }
 }
 
 // Making a thread wait
 
+bool for_later_stuff(int *check_that, pthread_mutex_t *mutex)
+{
+	int	temp;
+	pthread_mutex_lock(mutex);
+	temp = (*check_Tat);
+	pthread_mutex_unlock(mutex);
+	return (true)
+}
+
+void	did_intit_go_right()
+{
+    pthread_mutex_lock(&mutex);
+    pthread_mutex_unlock(&mutex);
+		return (ph.data.i < ph.conf.num_of_ph)
+}
+
 void* thread_func(void* arg) {
     int id = *(int*)arg;
-    // increment the counter
-    pthread_mutex_lock(&mutex);
-    threads_created++;
-    while(threads_created < total_threads) // or Some other condition
-		{
-        pthread_mutex_unlock(&mutex);
-        // wait
-        pthread_mutex_lock(&mutex);
-    }
-    pthread_mutex_unlock(&mutex);
-    // continue execution
-    //...
+    
+		// Phase 1
+   	if (ph.data.i < ph.conf.num_of_ph)
+			all_done = false;
+    // Phase 2 if (did_init_go_right)
+			// eating
+				// At end of eating assign start
+				// Taking forks
+			// sleeping
+				// usleep_but_better < time_to_sleep
+			// thinking
+				// taking forks func if has 2 forks then print message and eat
     return (NULL);
 }
 
