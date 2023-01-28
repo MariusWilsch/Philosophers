@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:47:55 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/01/26 18:43:51 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/01/28 15:12:54 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,34 @@
 # include <pthread.h>
 # include <stdbool.h>
 
-typedef struct philo
-{
-	pthread_t				thread;
-	pthread_mutex_t	lock;
-	struct timeval	start;
-	int							elapsed;
-	bool						is_locked;
-	int							number_tag; // Delete this later
-} t_philo;
 
-typedef struct data
+typedef struct s_mutexes
+{
+	pthread_mutex_t *fork;
+	pthread_mutex_t start;
+} t_mutex;
+
+typedef struct s_config
 {
 	int	num_of_ph;
 	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
-	// t_philo	*ph;
+} t_config;
+
+typedef struct s_philo
+{
+	pthread_t		thread;
+	int					id;
+	int					elapsed;
+} t_philo;
+
+typedef struct s_data
+{
+	pthread_t	*big_brother;
+	t_config	*conf;
+	t_mutex		**mutexes;
+	t_philo		*philosophers;
 } t_data;
 
 /*			Init			
@@ -43,6 +54,16 @@ typedef struct data
 - Assigning a thread and mutex to every index
 - Global Actions
 */
-void	invite_philosophers(t_philo **ph, t_data **data);
+// void	invite_philosophers(t_philo **ph, t_data **data);
 
 #endif
+
+/**
+ * @brief Utils	
+ * @note		
+ * parsing config data
+ * @note
+ * init mutexes
+*/
+int	setdata(t_config *conf, t_mutex *mutexes,t_data *data, char *argv[]);
+int	mutexes_init(t_mutex **mutexes, t_config *conf);

@@ -6,7 +6,7 @@
 #    By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 16:01:07 by mwilsch           #+#    #+#              #
-#    Updated: 2023/01/25 19:39:00 by mwilsch          ###   ########.fr        #
+#    Updated: 2023/01/27 13:33:06 by mwilsch          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,8 @@ RM				=	rm -rf
 ## Debugging ##
 ifdef DEBUG
 	CFLAGS += -g -fsanitize=address 
+elif DEBUG_THREAD
+	CFLAGS += -g -fsanitize=thread
 endif
 
 ## Colors ##
