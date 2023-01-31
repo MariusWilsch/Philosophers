@@ -6,75 +6,11 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 11:59:15 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/01/28 16:00:57 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/01/31 13:12:08 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-// dying ()
-	// start counter
-	// counter == time_to_die
-	// exit(1); with error message
-
-// Action func()
-	// Actions include in order
-		// Actions
-			// eating
-			// sleeping
-			// thinking
-		// Special
-			// dying
-
-
-// int	main (int argc, char *argv[])
-// {
-// 	// Struct t_philo
-// 	// struct data
-
-// 	// setdata()
-// 	// malloc struct of array
-// 	// Create threads & mutexes for each index
-// 		// Pass them to the global action function
-	
-
-// 	// Wait for all threads to complete with pthread_join // Do I need this?
-// }
-
-
-
-// 
-
-
-
-
-
-
-// Timer (Works for only tracking times under 1 sec)
-
-// int main(void)
-// {
-// 	struct timeval start, end;
-// 	int elapsed;
-// 	gettimeofday(&start, NULL);
-// 	// printf("%d\n", start.tv_usec);
-
-
-// 	while (1)
-// 	{
-// 		gettimeofday(&end, NULL);
-// 		elapsed = (end.tv_sec - start.tv_sec) * 1000 + (end.tv_usec - start.tv_usec) / 1000;
-// 		if (elapsed == (500))
-// 		{
-// 			// printf("%d\t", end.tv_usec - start.tv_usec);
-// 			printf("%d", elapsed);
-// 			break ;
-// 		}
-// 	}
-// }
-
-
-
 
 
 // The problem I'm facing right now is that:
@@ -104,30 +40,6 @@
 // So I need to break it down.
 
 // Back to ACP
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // If a have a s_data how do I link each s_philo struct to the s_data struct?
 	// When I intialise the array of struct for the philo threads I need a ptr to the s_data struct for at each s_philo[x];
 	// SO then I can access the individual s_philo structs from my s_data struct
@@ -147,14 +59,58 @@ struct s_philo {
 struct s_data shared_data;
 struct s_philo philosophers[6];
 
+// Connecting philsophers to struct
 int i;
 for (i = 0; i < 6; i++) {
     philosophers[i].id = i;
     shared_data.philosophers[i] = &philosophers[i];
 }
 
-// s_philo thread creation
+// How does this make a thread wait?
+// ---
+// Question: How can we make all threads wait until all threads have been
+// initialised? 
 
+void	did_intit_go_right()
+{
+		pthread_mutex_lock(&mutex); // 3.1 Can't lock the mutex until while loop in main thread has finihed 
+		// 3.2 if while loop is finished then mutex is locked so thread x can unlock & return
+		// 3.3 this will continue for all threads
+
+		// Idea
+			// Init start time here - this part will only be executed as soon as the while loop in the main
+			// thread is finished
+
+		pthread_mutex_unlock(&mutex); 
+		return (ph.data.i < ph.conf.num_of_ph) // This will evalutate to true every time so each thread can be started
+}
+
+// Assuming we have this thread func. How can we make the thread pause execution
+// until all threads are created?
+	// Assuming we have to create 5 threads and we want to pause the execution of the thread_func until
+	// all 5 threads are created. How is this possible only using a mutex and no global variables?
+
+void* thread_func(void* arg) {
+    int id = *(int*)arg;
+    
+		// Phase 1
+   	// if (ph.data.i < ph.conf.num_of_ph)
+		
+		if (did_init_go_right(pass local ph)) // Used to pause threads execution
+			
+    // Phase 2 if (did_init_go_right)
+			// eating
+				// At end of eating assign start
+				// Taking forks
+			// sleeping
+				// usleep_but_better < time_to_sleep
+			// thinking
+				// taking forks func if has 2 forks then print message and eat
+    return (NULL);
+}
+
+
+// s_philo thread creation
 void	invite_philosophers(t_philo *ph, t_data *data)
 {
 	struct timeval	start;
@@ -165,13 +121,13 @@ void	invite_philosophers(t_philo *ph, t_data *data)
 	i = 0;
 	temp = ph;
 	i = 0;
-	pthread_mutex_lock(&mutex);
-	while (i < (*data)->num_of_ph)
+	pthread_mutex_lock(&mutex); // 1. Locking init_mutex
+	while (i < (*data)->num_of_ph) // 2. Creating the threads while mutex is locked
 	{
-		if (pthread_create(&temp[i].thread, NULL, &philo_routine, &temp[i]) < 0)
-			return (pthread_mutex_unlock(&mutex))
 		temp[i].id = i;
 		temp[i].data = data;
+		if (pthread_create(&temp[i].thread, NULL, &philo_routine, &temp[i]) < 0)
+			return (pthread_mutex_unlock(&mutex))
 		i++;
 	}
 	i = 0;
@@ -184,7 +140,8 @@ void	invite_philosophers(t_philo *ph, t_data *data)
 }
 
 // Making a thread wait
-
+	// but why do I need that?
+	// the int is passed as pointer so I only send the address not the variable itself to avoid data races
 bool for_later_stuff(int *check_that, pthread_mutex_t *mutex)
 {
 	int	temp;
@@ -194,29 +151,10 @@ bool for_later_stuff(int *check_that, pthread_mutex_t *mutex)
 	return (true)
 }
 
-void	did_intit_go_right()
-{
-    pthread_mutex_lock(&mutex);
-    pthread_mutex_unlock(&mutex);
-		return (ph.data.i < ph.conf.num_of_ph)
-}
 
-void* thread_func(void* arg) {
-    int id = *(int*)arg;
-    
-		// Phase 1
-   	if (ph.data.i < ph.conf.num_of_ph)
-			all_done = false;
-    // Phase 2 if (did_init_go_right)
-			// eating
-				// At end of eating assign start
-				// Taking forks
-			// sleeping
-				// usleep_but_better < time_to_sleep
-			// thinking
-				// taking forks func if has 2 forks then print message and eat
-    return (NULL);
-}
+
+
+
 
 void	*dying_logic(void	*arg)
 {

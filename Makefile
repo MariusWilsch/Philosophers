@@ -6,7 +6,7 @@
 #    By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 16:01:07 by mwilsch           #+#    #+#              #
-#    Updated: 2023/01/27 13:33:06 by mwilsch          ###   ########.fr        #
+#    Updated: 2023/01/31 13:39:03 by mwilsch          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ White			=	\033[37m
 
 ## Files ##
 
-SRC_FILES	= philo philo_init
+SRC_FILES	= philo philo_utils
 
 SRC				=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ				=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))

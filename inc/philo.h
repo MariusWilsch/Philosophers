@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:47:55 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/01/28 15:26:36 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/01/31 13:54:34 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <pthread.h>
 # include <stdbool.h>
 
+typedef struct s_data t_data;
 
 typedef struct s_mutexes
 {
@@ -44,11 +45,12 @@ typedef struct s_philo
 
 typedef struct s_data
 {
-	pthread_t	*big_brother;
 	t_config	*conf;
 	t_mutex		*mutexes;
 	t_philo		*philosophers;
 } t_data;
+
+
 
 /*			Init			
 - Creating a array of struct
@@ -60,11 +62,11 @@ typedef struct s_data
 #endif
 
 /**
- * @brief Utils	
- * @note		
+ * @brief Utils
+ * @note
  * parsing config data
  * @note
  * init mutexes
 */
-int	setdata(t_config *conf, t_mutex *mutexes,t_data *data, char *argv[]);
-int	mutexes_init(t_mutex **mutexes, t_config *conf);
+bool	setdata(t_config *conf, t_mutex *mutexes,t_data *data, char *argv[]);
+bool	mutexes_init(t_mutex *mutexes, t_config *conf);
