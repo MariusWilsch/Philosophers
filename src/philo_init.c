@@ -6,69 +6,89 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 19:06:18 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/01/31 13:38:45 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/01/31 16:18:03 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philo.h"
 
-// int	convert_time(struct timeval	*s, struct timeval *e)	
-// {
-// 	return ((e->tv_sec - s->tv_sec) * 1000 + (e->tv_usec - s->tv_usec) / 1000);
-// }
-
-// 	// printf("I was started at %d\tI am ph %d\n",local_ph->start.tv_usec, local_ph->number_tag);
-// 	// This is pretty much the dying action
-// // If I pass the data struct how can I access the philsophers?
-
-// void	*philo_routine(void	*arg)  // 
-// {
-// 	t_philo	*local_ph = (t_philo *)arg;
-// 	struct timeval end;
-
-// 	while (true)
-// 	{
-// 		gettimeofday(&end, NULL);
-// 		local_ph->elapsed = convert_time(&local_ph->start, &end);
-// 		if (local_ph->elapsed == 700)
-// 		{
-// 			// Set bool to false in data struct
-// 			printf("At %d --> ph %d died\n",local_ph->elapsed, local_ph->number_tag);
-// 			return ((void *)0);
-// 		}
-// 	}
-// 	return (NULL);
-// }
-
-// void	invite_philosophers(t_philo **ph, t_data **data)
-// {
-// 	struct timeval	start;
-// 	t_philo					*temp;
-// 	int							i;
+bool	wait_for_init(t_philo *local_ph)
+{
+	struct timeval start
 	
+	pthread_mutex_lock(&local_ph->mutexes->start);
+	gettimeofday(&local_ph->start, NULL); // Init starting time
+	printf("I'm thread: %d\tand I'm started at %d\n", local_ph->id, local_ph->start.tv_usec);
+	pthread_mutex_unlock(&local_ph->mutexes->start);
+	return (local_ph->id < local_ph->conf->num_of_ph);
+}
 
+void	*philo_routine(void *arg)
+{
+	t_philo	*local_ph;
+	
+	local_ph = (t_philo *)arg;
+	wait_for_init(local_ph);
+	// printf("%d\t", local_ph->conf->num_of_ph);
+	
+	return (NULL);
+}
+
+// bool	init_philo(t_data *data)
+// {
+// 	int			i;
+// 	t_philo	*philo;
+	
+// 	philo = malloc(sizeof(t_philo) * data->conf->num_of_ph);
+// 	if (!philo)
+// 		return (false);
+// 	data->philosophers = philo;
 // 	i = 0;
-// 	temp = (*ph);
-// 	while (i < (*data)->num_of_ph)
+// 	pthread_mutex_lock(&data->mutexes->start);
+// 	while (i < data->conf->num_of_ph)
 // 	{
-// 		temp[i].number_tag = i;
+// 		philo[i].conf = data->conf;
+// 		philo[i].mutexes = data->mutexes;
+// 		philo[i].id = i;
+// 		if (pthread_create(&philo[i].thread, NULL, &philo_routine, &philo[i]))
+// 			return (false);
+// 		data->philosophers[i] = philo[i]; // How do I link the philosophers[i] with the data struct
 // 		i++;
 // 	}
+// 	pthread_mutex_unlock(&data->mutexes->start);
 // 	i = 0;
-// 	while (i < (*data)->num_of_ph)
+// 	while (i < data->conf->num_of_ph)
 // 	{
-// 		gettimeofday(&temp[i].start, NULL);
-// 		temp[i].is_locked = false;
-// 		pthread_mutex_init(&temp[i].lock, NULL);
-// 		if (pthread_create(&temp[i].thread, NULL, &philo_routine, &temp[i]) < 0)
-// 			exit(1);
+// 		if (pthread_join(philo[i].thread, NULL))
+// 			return (false);
 // 		i++;
 // 	}
-// 	// Add if clause that when bool is true return
-// 	i = 0;
-// 	while (i < (*data)->num_of_ph)
-// 	{
-// 		pthread_join(temp[i].thread, NULL);
-// 		i++;
-// 	}
+// 	return (true);
 // }
+
+bool	init_philo(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	data->philosophers = malloc(sizeof(t_philo) * data->conf->num_of_ph);
+	if (!data->philosophers)
+		return (false);
+	pthread_mutex_lock(&data->mutexes->start);
+	while (i < data->conf->num_of_ph)
+	{
+		data->philosophers[i].id = i;
+		data->philosophers[i].data = data;
+		if (pthread_create(data->philosophers[i].thread, NULL, &philo_routine, &data->philosophers[i]))
+			return (false);
+		i++;
+	}
+	pthread_mutex_unlock(&data->mutexes->start);
+	i = 0;
+	while (i < data->conf->num_of_ph)
+	{
+		pthread_join(data->philosophers[i].thread, NULL);
+		i++;
+	}
+	return (false);
+}

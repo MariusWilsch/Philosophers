@@ -6,7 +6,7 @@
 #    By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 16:01:07 by mwilsch           #+#    #+#              #
-#    Updated: 2023/01/31 13:39:03 by mwilsch          ###   ########.fr        #
+#    Updated: 2023/01/31 14:46:09 by mwilsch          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,9 +22,7 @@ RM				=	rm -rf
 
 ## Debugging ##
 ifdef DEBUG
-	CFLAGS += -g -fsanitize=address 
-elif DEBUG_THREAD
-	CFLAGS += -g -fsanitize=thread
+	CFLAGS += -g -fsanitize=address
 endif
 
 ## Colors ##
@@ -41,7 +39,7 @@ White			=	\033[37m
 
 ## Files ##
 
-SRC_FILES	= philo philo_utils
+SRC_FILES	= philo philo_utils philo_init
 
 SRC				=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ				=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))

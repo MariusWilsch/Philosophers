@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 11:59:15 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/01/31 13:12:08 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/01/31 16:15:49 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,13 +148,54 @@ bool for_later_stuff(int *check_that, pthread_mutex_t *mutex)
 	pthread_mutex_lock(mutex);
 	temp = (*check_Tat);
 	pthread_mutex_unlock(mutex);
-	return (true)
+	return (true);
+}
+
+
+bool	init_philo(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	data->philosophers = malloc(sizeof(t_philo) * data->conf->num_of_ph);
+	if (!data->philosophers)
+		return (false);
+	pthread_mutex_lock(&data->mutexes->start);
+	while (i < data->conf->num_of_ph)
+	{
+		data->philosophers[i].conf = data->conf;
+		data->philosophers[i].mutexes = data->mutexes;
+		data->philosophers[i].id = i;
+		if (pthread_create(data->philosophers[i].thread, NULL, &philo_routine, &data->philosophers[i]))
+			return (false);
+		i++;
+	}
+	pthread_mutex_unlock(&data->mutexes->start);
+	i = 0;
+	while (i < data->conf->num_of_ph)
+	{
+		pthread_join(data->philosophers[i].thread, NULL);
+		i++;
+	}
+	return (false);
 }
 
 
 
 
 
+
+
+
+
+
+start.tv_usec / 1000.0 = micros
+
+
+int	convert_time(struct timeval	*s, struct timeval *e)
+{
+	return ((e->tv_sec - s->tv_sec) * 1000 + (e->tv_usec - s->tv_usec) / 1000);
+}
 
 void	*dying_logic(void	*arg)
 {
