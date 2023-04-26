@@ -3,26 +3,27 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+         #
+#    By: verdant <verdant@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 16:01:07 by mwilsch           #+#    #+#              #
-#    Updated: 2023/01/25 19:39:00 by mwilsch          ###   ########.fr        #
+#    Updated: 2023/04/25 19:08:48 by verdant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 ## Marcos ##
 NAME			=	philo
+LIBFT			= libft/libft.a
 SRC_DIR		=	src/
 OBJ_DIR		=	obj/
 CC				=	gcc
-CFLAGS		= -pthread
+CFLAGS		= -pthread # -Wall -Wextra -Werror
 INC				= -I inc/
 RM				=	rm -rf
 
 
 ## Debugging ##
 ifdef DEBUG
-	CFLAGS += -g -fsanitize=address 
+	CFLAGS += -g -fsanitize=address
 endif
 
 ## Colors ##
@@ -39,17 +40,22 @@ White			=	\033[37m
 
 ## Files ##
 
-SRC_FILES	= philo philo_init
+SRC_FILES	= main parser print_msg
 
 SRC				=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ				=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
 
 OBJF			=	test
 
-all:	$(NAME)
+GREEN = \033[0;32m
+RED = \033[0;31m
+RESET = \033[0m
 
-$(NAME):	$(OBJ)
-			@$(CC) $(CFLAGS) $(OBJ) $(INC) -o $(NAME)
+
+all: libft $(NAME)
+
+$(NAME):	$(OBJ) $(LIBFT)
+			@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(INC) -o $(NAME)
 			@echo "$(Magenta)Philo complied$(Reset)"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
@@ -58,14 +64,19 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
 $(OBJF):
 			@mkdir -p $(OBJ_DIR)
 
+$(LIBFT):
+	@echo "$(GREEN)Building libft ...$(RESET)"
+	@$(MAKE) -C libft 
+
 clean:
 	@rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJF)
+	@$(MAKE) -C libft fclean
 
 fclean: clean
-	@$(RM) $(NAME)
-	@echo "$(Red)All libs cleaned$(Reset)"
+	@rm -rf $(NAME)delete
+	@echo "$(RED)Cleaning ...$(RESET)"
 
 re: fclean all
-	@echo "$(Yellow)Recomplied everything$(Reset)"
 
 .PHONY: all clean fclean re
