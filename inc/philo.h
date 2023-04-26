@@ -6,7 +6,7 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:47:55 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/04/26 12:35:38 by verdant          ###   ########.fr       */
+/*   Updated: 2023/04/26 22:07:46 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include <pthread.h>
 # include <stdbool.h>
 # include <stdlib.h>
+# include <sys/time.h>
+# include <stdio.h>
 # include "../libft/include/libft.h"
 # include "../libft/include/ft_printf.h"
 
@@ -60,7 +62,8 @@ typedef struct s_philo {
  * @param n_must_eat The number of times each philosopher must eat
  * @param start_time The time the simulation started in milliseconds
  * @param dead Whether or not a philosopher has died
- * @param print The mutex for printing
+ * @param print_lock The mutex for printing
+ * @param death_lock The mutex for checking if a philosopher has died
  * @param forks_arr An array of mutexes for the forks_arr
  * @param philo_arr An array of struct of philosophers
  */
@@ -72,7 +75,8 @@ typedef struct s_config {
 	int								n_must_eat;
 	int64_t						start_time;
 	bool							dead;
-	pthread_mutex_t		print;
+	pthread_mutex_t		print_lock;
+	pthread_mutex_t		death_lock;
 	pthread_mutex_t		*forks_arr;
 	t_philo						*philos_arr;
 } t_config;
@@ -90,5 +94,11 @@ bool	print_error(char *str);
 
 bool	config_init(int argc, char *argv[], t_config *config);
 bool	init_structs(int argc, char *argv[], t_config *config);
+
+/*			Time				*/
+
+int64_t	time_diff(int64_t present, int64_t past);
+int64_t	get_time_ms(void);
+void		usleep_but_better(int64_t sleep_time);
 
 #endif

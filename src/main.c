@@ -6,7 +6,7 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:09:27 by verdant           #+#    #+#             */
-/*   Updated: 2023/04/26 12:31:36 by verdant          ###   ########.fr       */
+/*   Updated: 2023/04/26 22:10:46 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,8 +52,10 @@ void cleanup(t_config *config, int n_philos)
 		pthread_mutex_destroy(&config->forks_arr[i]);
 		i++;
 	}
-	free(config->philos_arr);
 	free(config->forks_arr);
+	pthread_mutex_destroy(&config->print_lock);
+	pthread_mutex_destroy(&config->death_lock);
+	free(config->philos_arr);
 }
 
 
@@ -62,9 +64,6 @@ void cleanup(t_config *config, int n_philos)
 /**
  * @brief 
  * 
- * @note I need to think if I want to implement a standard for myself of how I parse my input
- * @note Do I want to use a double pointer and return a bool or do I want to return a pointer?
- * @note Maybe ask chatgpt and copy and paste my code and ask him what he thinks
  */
 int	main(int argc, char *argv[])
 {
@@ -72,7 +71,21 @@ int	main(int argc, char *argv[])
 	
 	if (!init_structs(argc, argv, &config))
 		return (EXIT_FAILURE);
+
+		// int64_t start_time = get_time_ms();
+    // printf("Starting time: %lld ms\n", start_time);
+
+    // // Sleep for 2 seconds
+    // usleep_but_better(50);
+
+    // int64_t end_time = get_time_ms();
+    // printf("Ending time: %lld ms\n", end_time);
+
+    // int64_t elapsed_time = time_diff(end_time, start_time);
+    // printf("Elapsed time: %lld ms\n", elapsed_time);
+
+	
 	cleanup(&config, config.num_philos);
-	atexit(leaks);
+	// atexit(leaks);
 	return (EXIT_SUCCESS);
 }

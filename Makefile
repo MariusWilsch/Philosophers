@@ -6,7 +6,7 @@
 #    By: verdant <verdant@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 16:01:07 by mwilsch           #+#    #+#              #
-#    Updated: 2023/04/25 19:08:48 by verdant          ###   ########.fr        #
+#    Updated: 2023/04/26 21:36:04 by verdant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ White			=	\033[37m
 
 ## Files ##
 
-SRC_FILES	= main parser print_msg
+SRC_FILES	= main parser print_msg time
 
 SRC				=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ				=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))

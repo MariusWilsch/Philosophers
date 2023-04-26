@@ -6,7 +6,7 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:23:53 by verdant           #+#    #+#             */
-/*   Updated: 2023/04/26 12:37:56 by verdant          ###   ########.fr       */
+/*   Updated: 2023/04/26 20:54:06 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ bool	forks_init(t_config *config, int n_forks_needed)
  * 
  * @param config Configuration struct to be filled
  * 
- * @note Config is declared on the stack in main, so it is passed by value
- * @note config->print is declared on the stack as well
+ * @note Config is declared on the stack in main
+ * @note config->print_lock is declared on the stack as well
  */
 bool	config_init(int argc, char *argv[], t_config *config)
 {
@@ -97,7 +97,9 @@ bool	config_init(int argc, char *argv[], t_config *config)
 	config->n_must_eat = -1;
 	config->start_time = 0;
 	config->dead = false;
-	if (pthread_mutex_init(&config->print, NULL) != 0)
+	if (pthread_mutex_init(&config->print_lock, NULL) != 0)
+		return (print_error("Config: Mutex init failed\n"));
+	if (pthread_mutex_init(&config->death_lock, NULL) != 0)
 		return (print_error("Config: Mutex init failed\n"));
 	if (argc == 6)
 		config->n_must_eat = ft_atoi(argv[5]);
@@ -116,7 +118,7 @@ bool	config_init(int argc, char *argv[], t_config *config)
  * @param argc Number of arguments
  * @param argv Array of arguments
  * 
- * @note config is declared on the stack in main, so it is passed by value
+ * @note config is declared on the stack in main, it's passed by reference
  */
 bool	init_structs(int argc, char *argv[], t_config *config)
 {
