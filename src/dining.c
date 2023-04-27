@@ -6,7 +6,7 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:27:15 by verdant           #+#    #+#             */
-/*   Updated: 2023/04/27 12:44:24 by verdant          ###   ########.fr       */
+/*   Updated: 2023/04/27 13:14:47 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void is_meal_expired(t_config *config, t_philo *philos)
 		{
 			config->dead = true;
 			print_log(&philos[i], "died", PHILO_STATE_DEAD);
+			pthread_mutex_unlock(&config->meal_lock);
 			return ;
 		}
 		i++;
@@ -51,7 +52,6 @@ void	*philo_routine(void *arg)
 		eating(philo); // TODO: Add n_must_eat logic
 		sleeping(philo);
 		thinking(philo);
-		// Repeat
 	}
 	return (NULL);
 }
