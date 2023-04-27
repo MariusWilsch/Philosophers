@@ -6,7 +6,7 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 11:59:15 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/04/27 10:21:03 by verdant          ###   ########.fr       */
+/*   Updated: 2023/04/27 15:32:03 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void pick_forks(t_philo *philosopher) {
     pthread_mutex_t *second_fork;
 
     // Determine the order in which to pick up the forks based on the philosopher's ID
-    if (philosopher->thread_id % 2 == 0) {
+    if (philosopher->id % 2 == 0) {
         first_fork = philosopher->l_fork;
         second_fork = philosopher->r_fork;
     } else {

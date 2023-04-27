@@ -6,7 +6,7 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:23:53 by verdant           #+#    #+#             */
-/*   Updated: 2023/04/27 13:21:59 by verdant          ###   ########.fr       */
+/*   Updated: 2023/04/27 15:32:03 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ bool	philos_init(t_config *config, int n_philos)
 	}
 	while (i < n_philos)
 	{
-		config->philos_arr[i].thread_id = i + 1;
+		config->philos_arr[i].id = i + 1;
 		config->philos_arr[i].last_eaten = 0;
 		config->philos_arr[i].meals_eaten = 0;
 		config->philos_arr[i].l_fork = &config->forks_arr[i];

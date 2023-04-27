@@ -6,7 +6,7 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:47:55 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/04/27 12:25:09 by verdant          ###   ########.fr       */
+/*   Updated: 2023/04/27 15:33:04 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef enum e_philo_state
 /**
  * @brief Philosopher struct
  * 
- * @param thread_id The thread id
+ * @param id The thread id
  * @param last_eaten The last time the philosopher ate
  * @param meals_eaten The number of times the philosopher has eaten
  * @param l_fork The left fork, which is his own fork
@@ -44,7 +44,7 @@ typedef enum e_philo_state
  * @param config The configuration struct
  */
 typedef struct s_philo {
-	int								thread_id;
+	int								id;
 	int64_t						last_eaten;
 	int								meals_eaten;
 	pthread_mutex_t		*l_fork;
@@ -91,7 +91,7 @@ void leaks(void);
 /*			Print			*/
 
 bool	print_error(char *str);
-bool	print_log(t_philo *philo, char *msg, t_philo_state state);
+void	print_log(t_philo *philo, char *msg, t_philo_state state);
 
 /*			Parser			*/
 
@@ -111,7 +111,7 @@ bool	start_dinner(t_config *config, t_philo *philos , int n_philos);
 /*			Actions			*/
 
 void eating(t_philo *philo);
-void sleeping(t_philo *philo);
-void thinking(t_philo *philo);
+bool sleeping(t_philo *philo);
+bool thinking(t_philo *philo);
 
 #endif
