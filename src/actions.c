@@ -6,7 +6,7 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:44:31 by verdant           #+#    #+#             */
-/*   Updated: 2023/04/27 13:32:24 by verdant          ###   ########.fr       */
+/*   Updated: 2023/04/27 13:33:18 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,12 @@ void sleeping(t_philo *philo)
 
 void thinking(t_philo *philo)
 {
-	// pthread_mutex_lock(&philo->config->meal_lock);
+	pthread_mutex_lock(&philo->config->meal_lock);
 	if (philo->config->dead == true)
 	{
-		// pthread_mutex_unlock(&philo->config->meal_lock);
+		pthread_mutex_unlock(&philo->config->meal_lock);
 		return ;
 	}
-	// pthread_mutex_unlock(&philo->config->meal_lock);
+	pthread_mutex_unlock(&philo->config->meal_lock);
 	print_log(philo, "is thinking", PHILO_STATE_THINKING);
 }
