@@ -6,20 +6,20 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:44:31 by verdant           #+#    #+#             */
-/*   Updated: 2023/04/27 15:40:24 by verdant          ###   ########.fr       */
+/*   Updated: 2023/04/27 15:42:34 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 /**
- * @brief 
+ * @brief Picks up the forks
  * 
  * @param philo A pointer to a philosopher
  * 
  * @note when the philosopher is eating, he needs to pick up both forks
- * @note the philosopher with the lowest id picks up the left fork first
- * @note the philosopher with the highest id picks up the right fork first
+ * @note the philosopher with even id picks up the left fork first
+ * @note the philosopher with uneven id picks up the right fork first
  * @note this prevents deadlock
  */
 void	pick_forks(t_philo *philo)
