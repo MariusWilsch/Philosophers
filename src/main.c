@@ -6,7 +6,7 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:09:27 by verdant           #+#    #+#             */
-/*   Updated: 2023/04/26 22:10:46 by verdant          ###   ########.fr       */
+/*   Updated: 2023/04/27 12:42:47 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,19 @@ void leaks(void)
 // 	}
 // }
 
+// Test code for time.c
+		// int64_t start_time = get_time();
+    // printf("Starting time: %lld ms\n", start_time);
+
+    // // Sleep for 2 seconds
+    // usleep_but_better(50);
+
+    // int64_t end_time = get_time();
+    // printf("Ending time: %lld ms\n", end_time);
+
+    // int64_t elapsed_time = time_diff(end_time, start_time);
+    // printf("Elapsed time: %lld ms\n", elapsed_time);
+
 
 
 void cleanup(t_config *config, int n_philos)
@@ -49,21 +62,25 @@ void cleanup(t_config *config, int n_philos)
 	i = 0;
 	while (i < n_philos)
 	{
+		if (pthread_join(config->philos_arr[i].thread, NULL) != 0)
+			ft_printf("Error joining thread\n");
 		pthread_mutex_destroy(&config->forks_arr[i]);
 		i++;
 	}
 	free(config->forks_arr);
 	pthread_mutex_destroy(&config->print_lock);
-	pthread_mutex_destroy(&config->death_lock);
+	pthread_mutex_destroy(&config->meal_lock);
 	free(config->philos_arr);
 }
 
 
-// init_test(&config, config.philos_arr);
+
 
 /**
  * @brief 
  * 
+ * 
+ * @note Testing intialization of structs // init_test(&config, config.philos_arr);
  */
 int	main(int argc, char *argv[])
 {
@@ -71,20 +88,7 @@ int	main(int argc, char *argv[])
 	
 	if (!init_structs(argc, argv, &config))
 		return (EXIT_FAILURE);
-
-		// int64_t start_time = get_time_ms();
-    // printf("Starting time: %lld ms\n", start_time);
-
-    // // Sleep for 2 seconds
-    // usleep_but_better(50);
-
-    // int64_t end_time = get_time_ms();
-    // printf("Ending time: %lld ms\n", end_time);
-
-    // int64_t elapsed_time = time_diff(end_time, start_time);
-    // printf("Elapsed time: %lld ms\n", elapsed_time);
-
-	
+	start_dinner(&config, config.philos_arr, config.num_philos);
 	cleanup(&config, config.num_philos);
 	// atexit(leaks);
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 16:13:46 by verdant           #+#    #+#             */
-/*   Updated: 2023/04/26 22:07:59 by verdant          ###   ########.fr       */
+/*   Updated: 2023/04/27 11:22:37 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @note I will get the current time by using gettimeofday()
  * 
  */
-int64_t	get_time_ms(void)
+int64_t	get_time(void)
 {
 	struct timeval	time;
 
@@ -34,18 +34,16 @@ int64_t	time_diff(int64_t present, int64_t past)
 
 /**
  * @brief Sleep for a given amount of milliseconds
- * 
- * @note I will use usleep() to sleep for a given amount of milliseconds
- * 
+ *  * 
  */
 void	usleep_but_better(int64_t sleep_time)
 {
 	int64_t 				sleep_start;
 
-	sleep_start = get_time_ms();
+	sleep_start = get_time();
 	while (1)
 	{
-		if (time_diff(get_time_ms(), sleep_start) >= sleep_time)
+		if (time_diff(get_time(), sleep_start) >= sleep_time)
 			return ;
 		usleep(50);
 	}

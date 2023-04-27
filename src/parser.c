@@ -6,7 +6,7 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:23:53 by verdant           #+#    #+#             */
-/*   Updated: 2023/04/26 20:54:06 by verdant          ###   ########.fr       */
+/*   Updated: 2023/04/27 11:02:37 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ bool	config_init(int argc, char *argv[], t_config *config)
 	config->dead = false;
 	if (pthread_mutex_init(&config->print_lock, NULL) != 0)
 		return (print_error("Config: Mutex init failed\n"));
-	if (pthread_mutex_init(&config->death_lock, NULL) != 0)
+	if (pthread_mutex_init(&config->meal_lock, NULL) != 0)
 		return (print_error("Config: Mutex init failed\n"));
 	if (argc == 6)
 		config->n_must_eat = ft_atoi(argv[5]);

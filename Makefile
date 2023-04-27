@@ -6,7 +6,7 @@
 #    By: verdant <verdant@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 16:01:07 by mwilsch           #+#    #+#              #
-#    Updated: 2023/04/26 21:36:04 by verdant          ###   ########.fr        #
+#    Updated: 2023/04/27 12:41:51 by verdant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LIBFT			= libft/libft.a
 SRC_DIR		=	src/
 OBJ_DIR		=	obj/
 CC				=	gcc
-CFLAGS		= -pthread # -Wall -Wextra -Werror
+CFLAGS		= -pthread -fsanitize=thread -g3 # -Wall -Wextra -Werror
 INC				= -I inc/
 RM				=	rm -rf
 
@@ -40,7 +40,7 @@ White			=	\033[37m
 
 ## Files ##
 
-SRC_FILES	= main parser print_msg time
+SRC_FILES	= main parser print_msg time dining actions
 
 SRC				=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ				=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))

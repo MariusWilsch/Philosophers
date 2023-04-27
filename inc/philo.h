@@ -6,7 +6,7 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:47:55 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/04/26 22:07:46 by verdant          ###   ########.fr       */
+/*   Updated: 2023/04/27 12:25:09 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ typedef struct s_config t_config;
 
 typedef enum e_philo_state
 {
+	PHILO_TAKEN_FORK,
 	PHILO_STATE_EATING,
 	PHILO_STATE_SLEEPING,
 	PHILO_STATE_THINKING,
@@ -49,6 +50,7 @@ typedef struct s_philo {
 	pthread_mutex_t		*l_fork;
 	pthread_mutex_t		*r_fork;
 	t_config					*config;
+	pthread_t					thread;
 } t_philo;
 
 
@@ -63,7 +65,7 @@ typedef struct s_philo {
  * @param start_time The time the simulation started in milliseconds
  * @param dead Whether or not a philosopher has died
  * @param print_lock The mutex for printing
- * @param death_lock The mutex for checking if a philosopher has died
+ * @param meal_lock The mutex for the updating the last_eaten variable
  * @param forks_arr An array of mutexes for the forks_arr
  * @param philo_arr An array of struct of philosophers
  */
@@ -76,7 +78,7 @@ typedef struct s_config {
 	int64_t						start_time;
 	bool							dead;
 	pthread_mutex_t		print_lock;
-	pthread_mutex_t		death_lock;
+	pthread_mutex_t		meal_lock;
 	pthread_mutex_t		*forks_arr;
 	t_philo						*philos_arr;
 } t_config;
@@ -89,6 +91,7 @@ void leaks(void);
 /*			Print			*/
 
 bool	print_error(char *str);
+bool	print_log(t_philo *philo, char *msg, t_philo_state state);
 
 /*			Parser			*/
 
@@ -98,7 +101,17 @@ bool	init_structs(int argc, char *argv[], t_config *config);
 /*			Time				*/
 
 int64_t	time_diff(int64_t present, int64_t past);
-int64_t	get_time_ms(void);
+int64_t	get_time(void);
 void		usleep_but_better(int64_t sleep_time);
+
+/*			Dinner			*/
+
+bool	start_dinner(t_config *config, t_philo *philos , int n_philos);
+
+/*			Actions			*/
+
+void eating(t_philo *philo);
+void sleeping(t_philo *philo);
+void thinking(t_philo *philo);
 
 #endif
