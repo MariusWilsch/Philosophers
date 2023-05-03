@@ -44,6 +44,6 @@ void	usleep_but_better(int64_t sleep_time)
 	{
 		if (time_diff(get_time(), sleep_start) >= sleep_time)
 			return ;
-		usleep(50);
+		usleep(300);
 	}
 }

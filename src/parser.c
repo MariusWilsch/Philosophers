@@ -18,11 +18,11 @@
  * @param str String to convert
  * @return int Converted integer
  */
-int	ft_atoi(const char *str)
+long	ft_atoi(const char *str)
 {
-	int	res;
-	int	i;
-	int	sign;
+	long	res;
+	int		i;
+	int		sign;
 
 	res = 0;
 	i = 0;
@@ -134,7 +134,10 @@ bool	config_init(int argc, char *argv[], t_config *c)
 	if (c->num_philos <= 0 || c->num_philos > 200)
 		return (print_error("config: Invalid number of philosophers\n"));
 	if (c->time_to_die < 0 || c->time_to_eat < 0 || c->time_to_sleep < 0)
+	{
+		printf("%lld\n", c->time_to_die);
 		return (print_error("config: Invalid time\n"));
+	}
 	if (argc == 6 && c->n_must_eat < 0)
 		return (print_error("config: Invalid number of meals\n"));
 	return (true);
@@ -152,6 +155,9 @@ bool	init_structs(int argc, char *argv[], t_config *config)
 {
 	if (!config_init(argc, argv, config))
 		return (false);
+	if (config->time_to_die > 2147483647 || config->time_to_eat > 2147483647
+		|| config->time_to_sleep > 2147483647)
+		return (print_error("config: Invalid time\n"));
 	if (!forks_init(config, config->num_philos))
 		return (false);
 	if (!philos_init(config, config->num_philos))

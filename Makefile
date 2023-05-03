@@ -1,77 +1,37 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: verdant <verdant@student.42.fr>            +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/01/23 16:01:07 by mwilsch           #+#    #+#              #
-#    Updated: 2023/05/02 18:53:47 by verdant          ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+TARGET := philo
+SRC_DIR := src/
+OBJ_DIR := obj/
+CC 		:= gcc
+CFLAGS := -Wall -Wextra -Werror -pthread
+INC 	= -I inc/
 
-## Marcos ##
-NAME			=	philo
-LIBFT			= libft/libft.a
-SRC_DIR		=	src/
-OBJ_DIR		=	obj/
-CC				=	gcc
-CFLAGS		= -pthread -fsanitize=thread -g3 -Wall -Wextra -Werror
-INC				= -I inc/
-RM				=	rm -rf
-
-
-## Debugging ##
-ifdef DEBUG
-	CFLAGS += -g -fsanitize=address
-endif
-
-## Colors ##
-
-Reset			=	\033[0m
-Black			=	\033[30m
-Red				=	\033[31m
-Green			=	\033[32m
-Yellow		=	\033[33m
-Blue			=	\033[34m
-Magenta		=	\033[35m
-Cyan			=	\033[36m
-White			=	\033[37m
-
-## Files ##
-
-SRC_FILES	= main parser print_msg time dining actions test
-
-SRC				=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
-OBJ				=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
-
-OBJF			=	test
+SRC := $(wildcard $(SRC_DIR)*.c)
+OBJ := $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRC))
 
 GREEN = \033[0;32m
 RED = \033[0;31m
 RESET = \033[0m
 
+.PHONY: all clean fclean re
 
-all: $(NAME)
+all: $(TARGET)
 
-$(NAME):	$(OBJ)
-			@$(CC) $(CFLAGS) $(OBJ) $(INC) -o $(NAME)
-			@echo "$(Magenta)Philo complied$(Reset)"
+$(TARGET): $(OBJ) 
+	@$(CC) $(CFLAGS) $^ -o $@
+	@echo "$(GREEN)Executable created.$(RESET)"
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
-			@$(CC) $(CFLAGS) -c $< $(INC) -o $@
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c $(OBJ_DIR) inc/philo.h
+	@$(CC) $(CCFLAGS) $(INC) -c $< -o $@
 
-$(OBJF):
-			@mkdir -p $(OBJ_DIR)
+$(OBJ_DIR): 
+	@mkdir -p $(OBJ_DIR)
 
 clean:
-	@rm -rf $(OBJ_DIR)
-	@rm -rf $(OBJF)
+	@rm -f $(OBJ_DIR)*.o
+	@echo "$(RED)Object files removed.$(RESET)"
 
 fclean: clean
-	@rm -rf $(NAME)
-	@echo "$(RED)Cleaning ...$(RESET)"
+	@rm -f $(TARGET)
+	@echo "$(RED)Executable removed.$(RESET)"
 
 re: fclean all
-
-.PHONY: all clean fclean re

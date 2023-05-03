@@ -43,8 +43,8 @@ void	is_meal_expired(t_config *c, t_philo *philos)
 			pthread_mutex_unlock(&c->meal_lock);
 			return ;
 		}
-		i++;
 		pthread_mutex_unlock(&c->meal_lock);
+		i++;
 	}
 }
 
