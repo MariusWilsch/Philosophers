@@ -6,7 +6,7 @@
 /*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/23 15:47:55 by mwilsch           #+#    #+#             */
-/*   Updated: 2023/04/27 15:33:04 by verdant          ###   ########.fr       */
+/*   Updated: 2023/05/02 18:50:11 by verdant          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,9 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include <stdio.h>
-# include "../libft/include/libft.h"
-# include "../libft/include/ft_printf.h"
+# include <unistd.h>
 
-typedef struct s_config t_config; 
-
-typedef enum e_philo_state
-{
-	PHILO_TAKEN_FORK,
-	PHILO_STATE_EATING,
-	PHILO_STATE_SLEEPING,
-	PHILO_STATE_THINKING,
-	PHILO_STATE_DEAD,
-}	t_philo_state;
-
+typedef struct s_config	t_config;
 
 /**
  * @brief Philosopher struct
@@ -44,15 +33,14 @@ typedef enum e_philo_state
  * @param config The configuration struct
  */
 typedef struct s_philo {
-	int								id;
+	int							id;
+	int							meals_eaten;
 	int64_t						last_eaten;
-	int								meals_eaten;
-	pthread_mutex_t		*l_fork;
-	pthread_mutex_t		*r_fork;
 	t_config					*config;
 	pthread_t					thread;
-} t_philo;
-
+	pthread_mutex_t				*r_fork;
+	pthread_mutex_t				*l_fork;
+}	t_philo;
 
 /**
  * @brief Configuration struct
@@ -71,27 +59,26 @@ typedef struct s_philo {
  */
 typedef struct s_config {
 	int								num_philos;
-	int64_t						time_to_die;
-	int64_t						time_to_eat;
-	int64_t						time_to_sleep;
 	int								n_must_eat;
-	int64_t						start_time;
 	bool							dead;
-	pthread_mutex_t		print_lock;
-	pthread_mutex_t		meal_lock;
-	pthread_mutex_t		*forks_arr;
-	t_philo						*philos_arr;
-} t_config;
-
+	int64_t							time_to_die;
+	int64_t							time_to_eat;
+	int64_t							time_to_sleep;
+	int64_t							start_time;
+	t_philo							*philos_arr;
+	pthread_mutex_t					print_lock;
+	pthread_mutex_t					meal_lock;
+	pthread_mutex_t					*forks_arr;
+}	t_config;
 
 /*			Main				*/
 
-void leaks(void);
+void	leaks(void);
 
 /*			Print			*/
 
 bool	print_error(char *str);
-void	print_log(t_philo *philo, char *msg, t_philo_state state);
+void	print_log(t_philo *philo, char *msg);
 
 /*			Parser			*/
 
@@ -100,18 +87,18 @@ bool	init_structs(int argc, char *argv[], t_config *config);
 
 /*			Time				*/
 
+void	usleep_but_better(int64_t sleep_time);
 int64_t	time_diff(int64_t present, int64_t past);
 int64_t	get_time(void);
-void		usleep_but_better(int64_t sleep_time);
 
 /*			Dinner			*/
 
-bool	start_dinner(t_config *config, t_philo *philos , int n_philos);
+bool	start_dinner(t_config *config, t_philo *philos, int n_philos);
 
 /*			Actions			*/
 
-void eating(t_philo *philo);
-bool sleeping(t_philo *philo);
-bool thinking(t_philo *philo);
+bool	eating(t_philo *philo);
+bool	sleeping(t_philo *philo);
+bool	thinking(t_philo *philo);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: verdant <verdant@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/23 16:01:07 by mwilsch           #+#    #+#              #
-#    Updated: 2023/04/27 15:13:59 by verdant          ###   ########.fr        #
+#    Updated: 2023/05/02 18:53:47 by verdant          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ LIBFT			= libft/libft.a
 SRC_DIR		=	src/
 OBJ_DIR		=	obj/
 CC				=	gcc
-CFLAGS		= -pthread -fsanitize=thread -g3 # -Wall -Wextra -Werror
+CFLAGS		= -pthread -fsanitize=thread -g3 -Wall -Wextra -Werror
 INC				= -I inc/
 RM				=	rm -rf
 
@@ -40,7 +40,7 @@ White			=	\033[37m
 
 ## Files ##
 
-SRC_FILES	= main parser print_msg time dining actions
+SRC_FILES	= main parser print_msg time dining actions test
 
 SRC				=	$(addprefix $(SRC_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJ				=	$(addprefix $(OBJ_DIR), $(addsuffix .o, $(SRC_FILES)))
@@ -52,10 +52,10 @@ RED = \033[0;31m
 RESET = \033[0m
 
 
-all: libft $(NAME)
+all: $(NAME)
 
-$(NAME):	$(OBJ) $(LIBFT)
-			@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(INC) -o $(NAME)
+$(NAME):	$(OBJ)
+			@$(CC) $(CFLAGS) $(OBJ) $(INC) -o $(NAME)
 			@echo "$(Magenta)Philo complied$(Reset)"
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
@@ -64,17 +64,12 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c | $(OBJF)
 $(OBJF):
 			@mkdir -p $(OBJ_DIR)
 
-$(LIBFT):
-	@echo "$(GREEN)Building libft ...$(RESET)"
-	@$(MAKE) -C libft 
-
 clean:
 	@rm -rf $(OBJ_DIR)
 	@rm -rf $(OBJF)
-	@$(MAKE) -C libft fclean
 
 fclean: clean
-	@rm -rf $(NAME)delete
+	@rm -rf $(NAME)
 	@echo "$(RED)Cleaning ...$(RESET)"
 
 re: fclean all
