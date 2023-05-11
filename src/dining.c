@@ -6,7 +6,7 @@
 /*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:27:15 by verdant           #+#    #+#             */
-/*   Updated: 2023/05/11 14:52:04 by mwilsch          ###   ########.fr       */
+/*   Updated: 2023/05/11 15:01:09 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	is_meal_expired(t_config *c, t_philo *philos)
 			pthread_mutex_unlock(&c->meal_lock);
 			return ;
 		}
-		if (c->n_must_eat != -1 && check_Meals(c) == true)
+		if (c->n_must_eat != -1 && check_meals(c) == true)
 		{
 			c->dead = true;
 			pthread_mutex_unlock(&c->meal_lock);
