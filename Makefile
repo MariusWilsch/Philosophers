@@ -35,4 +35,4 @@ fclean: clean
 	@rm -f $(TARGET)
 	@echo "$(RED)Executable removed.$(RESET)"
 
-re: fclean all
+re: fclean $(OBJ_DIR) all
