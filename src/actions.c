@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:44:31 by verdant           #+#    #+#             */
-/*   Updated: 2023/05/02 18:50:51 by verdant          ###   ########.fr       */
+/*   Updated: 2023/05/11 14:29:10 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ bool	pick_forks(t_philo *philo)
 	pthread_mutex_lock(&philo->config->meal_lock);
 	if (philo->config->dead == true)
 	{
+		pthread_mutex_unlock(first_fork);
+		pthread_mutex_unlock(second_fork);
 		pthread_mutex_unlock(&philo->config->meal_lock);
 		return (false);
 	}
 	pthread_mutex_unlock(&philo->config->meal_lock);
-	print_log(philo, "has taken a fork");
-	print_log(philo, "has taken a fork");
 	return (true);
 }
 
@@ -64,6 +64,8 @@ bool	eating(t_philo *philo)
 {
 	if (!pick_forks(philo))
 		return (false);
+	print_log(philo, "has taken a fork");
+	print_log(philo, "has taken a fork");
 	pthread_mutex_lock(&philo->config->meal_lock);
 	if (philo->config->dead == true)
 	{

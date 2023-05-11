@@ -28,6 +28,7 @@ $(OBJ_DIR):
 
 clean:
 	@rm -f $(OBJ_DIR)*.o
+	@rm -rf $(OBJ_DIR)
 	@echo "$(RED)Object files removed.$(RESET)"
 
 fclean: clean

@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   dining.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/27 10:27:15 by verdant           #+#    #+#             */
-/*   Updated: 2023/05/02 16:09:53 by verdant          ###   ########.fr       */
+/*   Updated: 2023/05/11 14:52:04 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+bool	check_meals(t_config *config)
+{
+	int	i;
+
+	i = 0;
+	while (i < config->num_philos)
+	{
+		if (config->philos_arr[i].meals_eaten < config->n_must_eat)
+			return (false);
+		i++;
+	}
+	return (true);
+}
 
 /**
  * @brief 
@@ -37,7 +51,7 @@ void	is_meal_expired(t_config *c, t_philo *philos)
 			pthread_mutex_unlock(&c->meal_lock);
 			return ;
 		}
-		if (c->n_must_eat != -1 && philos[i].meals_eaten == c->n_must_eat)
+		if (c->n_must_eat != -1 && check_Meals(c) == true)
 		{
 			c->dead = true;
 			pthread_mutex_unlock(&c->meal_lock);

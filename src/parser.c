@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: verdant <verdant@student.42.fr>            +#+  +:+       +#+        */
+/*   By: mwilsch <mwilsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/25 18:23:53 by verdant           #+#    #+#             */
-/*   Updated: 2023/05/02 15:33:32 by verdant          ###   ########.fr       */
+/*   Updated: 2023/05/11 14:49:23 by mwilsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ bool	config_init(int argc, char *argv[], t_config *c)
 		printf("%lld\n", c->time_to_die);
 		return (print_error("config: Invalid time\n"));
 	}
-	if (argc == 6 && c->n_must_eat < 0)
+	if (argc == 6 && c->n_must_eat <= 0)
 		return (print_error("config: Invalid number of meals\n"));
 	return (true);
 }
