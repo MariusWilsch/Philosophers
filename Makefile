@@ -23,7 +23,7 @@ $(TARGET): $(OBJ)
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(OBJ_DIR) inc/philo.h
 	@$(CC) $(CCFLAGS) $(INC) -c $< -o $@
 
-$(OBJ_DIR): 
+$(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 clean:

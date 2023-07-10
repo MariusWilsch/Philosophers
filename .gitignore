@@ -1,1 +1,4 @@
 LazyPhilosophersTester
+obj/
+philo
+.DS_Store
